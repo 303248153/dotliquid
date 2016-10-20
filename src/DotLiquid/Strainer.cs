@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DotLiquid.Exceptions;
+using System.FastReflection;
 
 namespace DotLiquid
 {
@@ -74,7 +75,7 @@ namespace DotLiquid
         public void Extend(Type type)
         {
             // From what I can tell, calls to Extend should replace existing filters. So be it.
-            var methods = type.GetRuntimeMethods().Where(m => m.IsPublic && m.IsStatic);
+            var methods = type.FastGetMethods().Where(m => m.IsPublic && m.IsStatic);
             var methodNames = methods.Select(m => Template.NamingConvention.GetMemberName(m.Name));
 
             foreach (var methodName in methodNames)
@@ -135,7 +136,7 @@ namespace DotLiquid
 
             try
             {
-                return methodInfo.Item2.Invoke(methodInfo.Item1, args.ToArray());
+                return methodInfo.Item2.FastInvoke(methodInfo.Item1, args.ToArray());
             }
             catch (TargetInvocationException ex)
             {

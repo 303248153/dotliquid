@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using DotLiquid.FileSystems;
 using DotLiquid.Util;
 using DotLiquid.NamingConventions;
+using System.FastReflection;
 
 namespace DotLiquid
 {
@@ -135,7 +136,7 @@ namespace DotLiquid
                 return transformer;
 
             // Check for interfaces
-            var interfaces = type.GetTypeInfo().ImplementedInterfaces;
+            var interfaces = type.FastGetInterfaces();
             foreach (var interfaceType in interfaces)
             {
                 if (ValueTypeTransformers.TryGetValue(interfaceType, out transformer))
@@ -155,7 +156,7 @@ namespace DotLiquid
                 return transformer;
 
             // Check for interfaces
-            var interfaces = type.GetTypeInfo().ImplementedInterfaces;
+            var interfaces = type.FastGetInterfaces();
             foreach (var interfaceType in interfaces)
             {
                 if (SafeTypeTransformers.TryGetValue(interfaceType, out transformer))

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using DotLiquid.NamingConventions;
 using DotLiquid.Util;
+using System.FastReflection;
 
 namespace DotLiquid
 {
@@ -43,12 +44,12 @@ namespace DotLiquid
         private static IEnumerable<PropertyInfo> GetPropertiesWithoutDuplicateNames(Type type, Func<PropertyInfo, bool> predicate = null)
         {
             IList<MemberInfo> properties = predicate != null
-                                               ? type.GetRuntimeProperties()
+                                               ? type.FastGetProperties()
                                                      .Where(p => p.CanRead && p.GetMethod.IsPublic && !p.GetMethod.IsStatic)
                                                      .Where(predicate)
                                                      .Cast<MemberInfo>()
                                                      .ToList()
-                                               : type.GetRuntimeProperties()
+                                               : type.FastGetProperties()
                                                      .Where(p => p.CanRead && p.GetMethod.IsPublic && !p.GetMethod.IsStatic)
                                                      .Cast<MemberInfo>()
                                                      .ToList();
@@ -69,13 +70,13 @@ namespace DotLiquid
         {
             IList<MemberInfo> methods = predicate != null
                                             ? type
-                                                  .GetRuntimeMethods()
+                                                  .FastGetMethods()
                                                   .Where(m => m.IsPublic && !m.IsStatic)
                                                   .Where(predicate)
                                                   .Cast<MemberInfo>()
                                                   .ToList()
                                             : type
-                                                  .GetRuntimeMethods()
+                                                  .FastGetMethods()
                                                   .Where(m => m.IsPublic && !m.IsStatic)
                                                   .Cast<MemberInfo>()
                                                   .ToList();
@@ -225,10 +226,10 @@ namespace DotLiquid
 
             MethodInfo mi;
             if (TypeResolution.CachedMethods.TryGetValue(method, out mi))
-                return mi.Invoke(GetObject(), null);
+                return mi.FastInvoke(GetObject(), null);
             PropertyInfo pi;
             if (TypeResolution.CachedProperties.TryGetValue(method, out pi))
-                return pi.GetValue(GetObject(), null);
+                return pi.FastGetValue(GetObject());
             return BeforeMethod(method);
         }
     }

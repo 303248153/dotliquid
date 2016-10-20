@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>ZKWeb.Fork.FastReflection</id>
+    <version>2.1.0</version>
+    <title>ZKWeb.Fork.FastReflection</title>
+    <authors>Tim Jones, Alessandro Petrelli</authors>
+    <owners>303248153</owners>
+    <description>This is a FastReflection variant for the ZKWeb project.</description>
+    <summary>This is a FastReflection variant for the ZKWeb project.</summary>
+    <language>en-US</language>
+    <projectUrl>https://github.com/zkweb-framework/dotliquid</projectUrl>
+    <licenseUrl>https://fastreflection.codeplex.com/license</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+  </metadata>
+  <files>
+    <file src="FastReflection.License.txt" target="." />
+    <file src="FastReflection.Provenance.txt" target="." />
+    <file src="bin\Release\net451\FastReflection.dll" target="lib\net45" />
+    <file src="bin\Release\net451\FastReflection.xml" target="lib\net45" />
+    <file src="bin\Release\net451\FastReflection.pdb" target="lib\net45" />
+    <file src="bin\Release\netstandard1.5\FastReflection.dll" target="lib\netstandard1.5" />
+    <file src="bin\Release\netstandard1.5\FastReflection.xml" target="lib\netstandard1.5" />
+    <file src="bin\Release\netstandard1.5\FastReflection.pdb" target="lib\netstandard1.5" />
+  </files>
+</package>

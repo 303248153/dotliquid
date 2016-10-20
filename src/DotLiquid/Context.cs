@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using DotLiquid.Exceptions;
 using DotLiquid.Util;
+using System.FastReflection;
 
 namespace DotLiquid
 {
@@ -383,7 +384,7 @@ namespace DotLiquid
             if ((obj is IList) && (part is int))
                 return true;
 
-            if (TypeUtility.IsAnonymousType(obj.GetType()) && obj.GetType().GetRuntimeProperty((string)part) != null)
+            if (TypeUtility.IsAnonymousType(obj.GetType()) && obj.GetType().FastGetProperty((string)part) != null)
                 return true;
 
             if ((obj is IIndexable) && ((IIndexable)obj).ContainsKey((string)part))
@@ -400,7 +401,7 @@ namespace DotLiquid
             else if (obj is IList)
                 value = ((IList)obj)[(int)key];
             else if (TypeUtility.IsAnonymousType(obj.GetType()))
-                value = obj.GetType().GetRuntimeProperty((string)key).GetValue(obj, null);
+                value = obj.GetType().FastGetProperty((string)key).FastGetValue(obj);
             else if (obj is IIndexable)
                 value = ((IIndexable)obj)[key];
             else
@@ -414,7 +415,7 @@ namespace DotLiquid
                 else if (obj is IList)
                     ((IList)obj)[(int)key] = newValue;
                 else if (TypeUtility.IsAnonymousType(obj.GetType()))
-                    obj.GetType().GetRuntimeProperty((string)key).SetValue(obj, newValue, null);
+                    obj.GetType().FastGetProperty((string)key).FastSetValue(obj, newValue);
                 else
                     throw new NotSupportedException();
                 return newValue;

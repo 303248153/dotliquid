@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.FastReflection;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -44,7 +45,7 @@ namespace DotLiquid
         private static void FromAnonymousObject35(object anonymousObject, Hash hash)
         {
             foreach (PropertyInfo property in anonymousObject.GetType().GetProperties())
-                hash[property.Name] = property.GetValue(anonymousObject, null);
+                hash[property.Name] = property.FastGetValue(anonymousObject, null);
         }
 #else
         private static void FromAnonymousObject40(object anonymousObject, Hash hash)
@@ -93,7 +94,7 @@ namespace DotLiquid
                 Expression.Assign(castedObj,Expression.Convert(objParam,type))
             );
 
-            foreach (PropertyInfo property in type.GetTypeInfo().DeclaredProperties.Where(p => p.CanRead && p.GetMethod.IsPublic && !p.GetMethod.IsStatic))
+            foreach (PropertyInfo property in type.FastGetProperties().Where(p => p.CanRead && p.GetMethod.IsPublic && !p.GetMethod.IsStatic))
             {
                 bodyInstructions.Add(
                     Expression.Assign(

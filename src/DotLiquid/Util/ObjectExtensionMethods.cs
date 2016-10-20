@@ -1,4 +1,5 @@
 using System;
+using System.FastReflection;
 using System.Linq;
 using System.Reflection;
 
@@ -22,11 +23,11 @@ namespace DotLiquid.Util
 
             Type type = value.GetType();
 
-            MethodInfo methodInfo = type.GetRuntimeMethod(member, Type.EmptyTypes);
+            MethodInfo methodInfo = type.FastGetMethod(member);
             if (methodInfo != null && (!ensureNoParameters || !methodInfo.GetParameters().Any()))
                 return true;
 
-            PropertyInfo propertyInfo = type.GetRuntimeProperty(member);
+            PropertyInfo propertyInfo = type.FastGetProperty(member);
             if (propertyInfo != null && propertyInfo.CanRead)
                 return true;
 
@@ -49,13 +50,13 @@ namespace DotLiquid.Util
 
             Type type = value.GetType();
 
-            MethodInfo methodInfo = type.GetRuntimeMethod(member, Type.EmptyTypes);
+            MethodInfo methodInfo = type.FastGetMethod(member);
             if (methodInfo != null)
-                return methodInfo.Invoke(value, parameters);
+                return methodInfo.FastInvoke(value, parameters);
 
-            PropertyInfo propertyInfo = type.GetRuntimeProperty(member);
+            PropertyInfo propertyInfo = type.FastGetProperty(member);
             if (propertyInfo != null)
-                return propertyInfo.GetValue(value, null);
+                return propertyInfo.FastGetValue(value);
 
             return null;
         }

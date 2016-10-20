@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 
 using DotLiquid.Util;
 using NUnit.Framework;
+using System.FastReflection;
 
 namespace DotLiquid.Tests
 {
@@ -24,11 +25,11 @@ namespace DotLiquid.Tests
                     {
                         if (t.IsStatic)
                         {
-                            Assert.AreNotEqual(0, RegexOptions.Compiled & ((Regex) t.GetValue(null)).Options);
+                            Assert.AreNotEqual(0, RegexOptions.Compiled & ((Regex) t.FastGetValue(null)).Options);
                         }
                         else
                         {
-                            Assert.AreNotEqual(0, RegexOptions.Compiled & ((Regex)t.GetValue(parent)).Options);
+                            Assert.AreNotEqual(0, RegexOptions.Compiled & ((Regex)t.FastGetValue(parent)).Options);
                         }
 
                         //Trace.TraceInformation(parent.Name + ": " + t.Name);
