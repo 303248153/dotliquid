@@ -45,8 +45,14 @@ namespace DotLiquid.Tags
             Template partial = file as Template;
             partial = partial ?? Template.Parse(file == null ? null : file.ToString());
 
-            string shortenedTemplateName = _templateName.Substring(1, _templateName.Length - 2);
-            object variable = context[_variableName ?? shortenedTemplateName];
+            // support style: include 'path' and include "path"
+            string shortenedTemplateName = null;
+            object variable = null;
+            if (_templateName.Length > 0 && (_templateName[0] == '\'' || _templateName[0] == '"'))
+            {
+                shortenedTemplateName = _templateName.Substring(1, _templateName.Length - 2);
+                variable = context[_variableName ?? shortenedTemplateName];
+            }
 
             context.Stack(() =>
             {
@@ -55,7 +61,7 @@ namespace DotLiquid.Tags
 
                 if (variable is IEnumerable)
                 {
-                    ((IEnumerable) variable).Cast<object>().ToList().ForEach(v =>
+                    ((IEnumerable)variable).Cast<object>().ToList().ForEach(v =>
                     {
                         context[shortenedTemplateName] = v;
                         partial.Render(result, RenderParameters.FromContext(context));
@@ -63,7 +69,10 @@ namespace DotLiquid.Tags
                     return;
                 }
 
-                context[shortenedTemplateName] = variable;
+                if (shortenedTemplateName != null)
+                {
+                    context[shortenedTemplateName] = variable;
+                }
                 partial.Render(result, RenderParameters.FromContext(context));
             });
         }
