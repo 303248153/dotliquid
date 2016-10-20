@@ -12,6 +12,7 @@ namespace DotLiquid
 {
     public class Context
     {
+        public static bool DisplayFullException { get; set; }
         private static readonly Regex SingleQuotedRegex = R.C(R.Q(@"^'(.*)'$"));
         private static readonly Regex DoubleQuotedRegex = R.C(R.Q(@"^""(.*)""$"));
         private static readonly Regex IntegerRegex = R.C(R.Q(@"^([+-]?\d+)$"));
@@ -93,9 +94,11 @@ namespace DotLiquid
             if (_rethrowErrors)
                 throw ex;
 
+            var message = DisplayFullException ? ex.ToString() : ex.Message;
+
             if (ex is SyntaxException)
-                return string.Format(Liquid.ResourceManager.GetString("ContextLiquidSyntaxError"), ex.Message);
-            return string.Format(Liquid.ResourceManager.GetString("ContextLiquidError"), ex.Message);
+                return string.Format(Liquid.ResourceManager.GetString("ContextLiquidSyntaxError"), message);
+            return string.Format(Liquid.ResourceManager.GetString("ContextLiquidError"), message);
         }
 
         public object Invoke(string method, List<object> args)
