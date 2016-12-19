@@ -346,6 +346,16 @@ namespace System.FastReflection
         }
 
         /// <summary>
+        /// Same as GetCustomAttributes(attributeType, inherit), but work faster
+        /// </summary>
+        public static object[] FastGetCustomAttributes(this MemberInfo memberInfo, Type attributeType, bool inherit)
+        {
+            return AttributesCache.GetOrAdd(
+                new StructTuple<MemberInfo, Type>(memberInfo, attributeType),
+                key => key.First.GetCustomAttributes(attributeType, inherit).ToArray<object>());
+        }
+
+        /// <summary>
         /// Same as Type.GetInterfaces()
         /// Original implemenation is enough fast, here just call the original method
         /// </summary>
