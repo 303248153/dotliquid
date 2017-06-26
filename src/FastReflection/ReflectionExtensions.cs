@@ -363,7 +363,11 @@ namespace System.FastReflection
         /// <returns></returns>
         public static Type[] FastGetInterfaces(this Type type)
         {
+#if CORE
             return type.GetTypeInfo().GetInterfaces();
+#else
+            return type.GetInterfaces();
+#endif
         }
 
         /// <summary>
@@ -372,7 +376,11 @@ namespace System.FastReflection
         /// </summary>
         public static PropertyInfo FastGetProperty(this Type type, string name, BindingFlags bindingFlags)
         {
+#if CORE
             return type.GetTypeInfo().GetProperty(name, bindingFlags);
+#else
+            return type.GetProperty(name, bindingFlags);
+#endif
         }
 
         /// <summary>
@@ -381,7 +389,11 @@ namespace System.FastReflection
         /// </summary>
         public static PropertyInfo FastGetProperty(this Type type, string name)
         {
+#if CORE
             return type.GetTypeInfo().GetProperty(name);
+#else
+            return type.GetProperty(name);
+#endif
         }
 
         /// <summary>
@@ -390,7 +402,11 @@ namespace System.FastReflection
         /// </summary>
         public static FieldInfo FastGetField(this Type type, string name, BindingFlags bindingFlags)
         {
+#if CORE
             return type.GetTypeInfo().GetField(name, bindingFlags);
+#else
+            return type.GetField(name, bindingFlags);
+#endif
         }
 
         /// <summary>
@@ -399,7 +415,11 @@ namespace System.FastReflection
         /// </summary>
         public static FieldInfo FastGetField(this Type type, string name)
         {
+#if CORE
             return type.GetTypeInfo().GetField(name);
+#else
+            return type.GetField(name);
+#endif
         }
 
         /// <summary>
@@ -408,7 +428,11 @@ namespace System.FastReflection
         /// </summary>
         public static MethodInfo FastGetMethod(this Type type, string name, BindingFlags bindingFlags)
         {
+#if CORE
             return type.GetTypeInfo().GetMethod(name, bindingFlags);
+#else
+            return type.GetMethod(name, bindingFlags);
+#endif
         }
 
         /// <summary>
@@ -417,7 +441,11 @@ namespace System.FastReflection
         /// </summary>
         public static MethodInfo FastGetMethod(this Type type, string name)
         {
+#if CORE
             return type.GetTypeInfo().GetMethod(name);
+#else
+            return type.GetMethod(name);
+#endif
         }
     }
 }

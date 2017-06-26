@@ -1,8 +1,8 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package>
   <metadata>
     <id>ZKWeb.Fork.DotLiquid</id>
-    <version>2.1.1</version>
+    <version>2.2.0</version>
     <title>ZKWeb.Fork.DotLiquid</title>
     <authors>Tim Jones, Alessandro Petrelli</authors>
     <owners>303248153</owners>
