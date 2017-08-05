@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -37,7 +37,10 @@ namespace System.FastReflection
 
         public override int GetHashCode()
         {
-            return (First?.GetHashCode() ?? 0) ^ (Second?.GetHashCode() ?? 0);
+            // same with Tuple.CombineHashCodess
+            var hash_1 = First?.GetHashCode() ?? 0;
+            var hash_2 = Second?.GetHashCode() ?? 0;
+            return (hash_1 << 5) + hash_1 ^ hash_2;
         }
     }
 }

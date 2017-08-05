@@ -1,4 +1,4 @@
-﻿/*
+/*
 Some of the following code was taken from http://fastreflectionlib.codeplex.com/
 
 Microsoft Public License(Ms-PL)
@@ -38,6 +38,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace System.FastReflection
 {
@@ -257,6 +258,7 @@ namespace System.FastReflection
         /// <summary>
         /// Same as MethodInfo.Invoke, but work faster
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object FastInvoke(this MethodInfo methodInfo, object instance, params object[] parameters)
         {
             var invoker = MethodInvokerCache.GetOrAdd(methodInfo, m => MakeInvoker(m));
@@ -266,6 +268,7 @@ namespace System.FastReflection
         /// <summary>
         /// Same as PropertyInfo.SetValue or FieldInfo.SetValue, but work faster
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void FastSetValue(this MemberInfo memberInfo, object instance, object value)
         {
             var setter = MemberSetterCache.GetOrAdd(memberInfo, m => MakeSetter(m));
@@ -275,6 +278,7 @@ namespace System.FastReflection
         /// <summary>
         /// Same as PropertyInfo.GetValue or FieldInfo.GetValue, but work faster
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object FastGetValue(this MemberInfo memberInfo, object instance)
         {
             var getter = MemberGetterCache.GetOrAdd(memberInfo, m => MakeGetter(m));
@@ -284,6 +288,7 @@ namespace System.FastReflection
         /// <summary>
         /// Same as Type.GetProperties(bindFlags), but work faster
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PropertyInfo[] FastGetProperties(this Type type, BindingFlags bindingFlags)
         {
             return PropertiesCache.GetOrAdd(
@@ -294,6 +299,7 @@ namespace System.FastReflection
         /// <summary>
         /// Same as Type.GetProperties(), but work faster
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PropertyInfo[] FastGetProperties(this Type type)
         {
             return type.FastGetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
@@ -302,6 +308,7 @@ namespace System.FastReflection
         /// <summary>
         /// Same as Type.GetFields(bindFlags), but work faster
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FieldInfo[] FastGetFields(this Type type, BindingFlags bindingFlags)
         {
             return FieldsCache.GetOrAdd(
@@ -312,6 +319,7 @@ namespace System.FastReflection
         /// <summary>
         /// Same as Type.GetFields(), but work faster
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FieldInfo[] FastGetFields(this Type type)
         {
             return type.FastGetFields(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
@@ -320,6 +328,7 @@ namespace System.FastReflection
         /// <summary>
         /// Same as Type.GetMethods(bindingFlags), but work faster
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static MethodInfo[] FastGetMethods(this Type type, BindingFlags bindingFlags)
         {
             return MethodsCache.GetOrAdd(
@@ -330,6 +339,7 @@ namespace System.FastReflection
         /// <summary>
         /// Same as Type.GetMethods(), but work faster
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static MethodInfo[] FastGetMethods(this Type type)
         {
             return type.FastGetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
@@ -338,6 +348,7 @@ namespace System.FastReflection
         /// <summary>
         /// Same as GetCustomAttributes(attributeType, false), but work faster
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object[] FastGetCustomAttributes(this MemberInfo memberInfo, Type attributeType)
         {
             return AttributesCache.GetOrAdd(
@@ -348,6 +359,7 @@ namespace System.FastReflection
         /// <summary>
         /// Same as GetCustomAttributes(attributeType, inherit), but work faster
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static object[] FastGetCustomAttributes(this MemberInfo memberInfo, Type attributeType, bool inherit)
         {
             return AttributesCache.GetOrAdd(
@@ -361,91 +373,70 @@ namespace System.FastReflection
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Type[] FastGetInterfaces(this Type type)
         {
-#if CORE
-            return type.GetTypeInfo().GetInterfaces();
-#else
             return type.GetInterfaces();
-#endif
         }
 
         /// <summary>
         /// Same as Type.GetProperty(name, bindFlags)
         /// Original implemenation is enough fast, here just call the original method
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PropertyInfo FastGetProperty(this Type type, string name, BindingFlags bindingFlags)
         {
-#if CORE
-            return type.GetTypeInfo().GetProperty(name, bindingFlags);
-#else
             return type.GetProperty(name, bindingFlags);
-#endif
         }
 
         /// <summary>
         /// Same as Type.GetProperty(name)
         /// Original implemenation is enough fast, here just call the original method
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static PropertyInfo FastGetProperty(this Type type, string name)
         {
-#if CORE
-            return type.GetTypeInfo().GetProperty(name);
-#else
             return type.GetProperty(name);
-#endif
         }
 
         /// <summary>
         /// Same as Type.GetField(name, bindFlags)
         /// Original implemenation is enough fast, here just call the original method
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FieldInfo FastGetField(this Type type, string name, BindingFlags bindingFlags)
         {
-#if CORE
-            return type.GetTypeInfo().GetField(name, bindingFlags);
-#else
             return type.GetField(name, bindingFlags);
-#endif
         }
 
         /// <summary>
         /// Same as Type.GetField(name)
         /// Original implemenation is enough fast, here just call the original method
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static FieldInfo FastGetField(this Type type, string name)
         {
-#if CORE
-            return type.GetTypeInfo().GetField(name);
-#else
             return type.GetField(name);
-#endif
         }
 
         /// <summary>
         /// Same as Type.GetMethod(name, bindFlags)
         /// Original implemenation is enough fast, here just call the original method
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static MethodInfo FastGetMethod(this Type type, string name, BindingFlags bindingFlags)
         {
-#if CORE
-            return type.GetTypeInfo().GetMethod(name, bindingFlags);
-#else
             return type.GetMethod(name, bindingFlags);
-#endif
         }
 
         /// <summary>
         /// Same as Type.GetMethod(name)
         /// Original implemenation is enough fast, here just call the original method
         /// </summary>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static MethodInfo FastGetMethod(this Type type, string name)
         {
-#if CORE
-            return type.GetTypeInfo().GetMethod(name);
-#else
             return type.GetMethod(name);
-#endif
         }
     }
 }
