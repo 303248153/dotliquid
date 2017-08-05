@@ -15,7 +15,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>template templating language liquid markup</tags>
     <dependencies>
-      <dependency id="ZKWeb.Fork.FastReflection" version="2.1.1" />
+      <dependency id="ZKWeb.Fork.FastReflection" version="2.2.0" />
     </dependencies>
   </metadata>
   <files>
