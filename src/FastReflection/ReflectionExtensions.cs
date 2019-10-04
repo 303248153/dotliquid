@@ -438,5 +438,19 @@ namespace System.FastReflection
         {
             return type.GetMethod(name);
         }
+
+        /// <summary>
+        /// Clear cached informations
+        /// </summary>
+        public static void ClearCache()
+        {
+            MethodInvokerCache.Clear();
+            MemberSetterCache.Clear();
+            MemberGetterCache.Clear();
+            PropertiesCache.Clear();
+            FieldsCache.Clear();
+            MethodsCache.Clear();
+            AttributesCache.Clear();
+        }
     }
 }
